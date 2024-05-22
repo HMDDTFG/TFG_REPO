@@ -35,14 +35,26 @@
                 <li><a class="titulo" id="botonquien" href="quiensomos.php">¿QUIÉNES SOMOS?</a></li>
                 <li><a class="separacion"></a></li>
                 <li><a class="titulo">PRODUCTOS</a></li>
-                <li><a class="opciones" href="marcas.php">POR MARCAS</a></li>
-                <li><a class="opciones" href="masprecio.php">MÁS CAROS</a></li>
-                <li><a class="opciones" href="menosprecio.php">MÁS BARATOS</a></li>
+                <li><a class="opciones">POR MARCAS</a></li>
+                <li><a class="opciones price-sorting-link" href="#" data-sort="h2l">MÁS CAROS</a></li>
+                <li><a class="opciones price-sorting-link" href="#" data-sort="l2h">MÁS BARATOS</a></li>
                 <li><a class="separacion"></a></li>
                 <li><a class="titulo">AYUDA Y AJUSTES</a></li>
-                <li><a class="opciones" href="micuenta.php">MI CUENTA</a></li>
+                <?php 
+                    if (isset($_SESSION['id_usuario'])) {
+                     
+                     echo '<li><a class="opciones" href="micuenta.php">MI CUENTA</a></li>';
+                     } 
+                ?>
                 <li><a class="opciones" href="contacto.php">ATENCIÓN AL CLIENTE</a></li>
-                <li><a class="opciones" href="login.html">IDENTIFICARSE</a></li>
+                <?php 
+                    if (isset($_SESSION['id_usuario'])) {
+                     
+                     echo "<li><a class=\"opciones\" href=\"login.php\">OTRA CUENTA</a></li>";
+                     } else {
+                    echo "<li><a class=\"opciones\" href=\"login.php\">IDENTIFICARSE</a></li>";
+                    }
+                ?>
                 <li><a class="separacion"></a></li>
                 <li><a class="titulo">ENCUENTRANOS AQUÍ</a></li>
                 <img class="rrss" src="./img/instagram.png"><img id="twitter" class="rrss" src="./img/twitter.png">

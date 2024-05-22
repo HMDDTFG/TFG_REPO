@@ -1,5 +1,41 @@
 <?php
-include "login2.php";
+// Iniciar la sesión
+session_start();
+
+// Incluir el archivo de conexión
+include "conexion.php";
+
+
+// Verificar si el formulario fue enviado
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Obtener los datos del formulario
+    $username = $_POST['usuario'];
+    $password = $_POST['contraseña'];
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    // Preparar y ejecutar la consulta para buscar al usuario
+    $sql = "SELECT `id_usuario`, `password` FROM `usuario` WHERE `id_usuario` LIKE '$username'";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+
+    // Verificar si se encontró el usuario
+    if ($stmt->rowCount() == 1) {
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Verificar la contraseña
+        if (password_verify($password, $user['password'])) {
+            // Las credenciales son correctas, iniciar sesión
+            $_SESSION['id_usuario'] = $user['id_usuario'];
+            header("Location: index.php"); // Redirigir a la página de inicio
+            exit;
+        }else {
+            // La contraseña es incorrecta
+            echo "Contraseña incorrecta.";
+        }
+    } else {
+        // El usuario no existe
+        echo "El usuario no existe.";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
