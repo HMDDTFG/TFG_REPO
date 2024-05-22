@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['contraseña'];
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     // Preparar y ejecutar la consulta para buscar al usuario
-    $sql = "SELECT `id_usuario`, `password` FROM `usuario` WHERE `id_usuario` LIKE '$username'";
+    $sql = "SELECT `id_usuario`, `password`, `rol` FROM `usuario` WHERE `id_usuario` LIKE '$username'";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
 
@@ -23,10 +23,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Verificar la contraseña
         if (password_verify($password, $user['password'])) {
-            // Las credenciales son correctas, iniciar sesión
-            $_SESSION['id_usuario'] = $user['id_usuario'];
-            header("Location: index.php"); // Redirigir a la página de inicio
-            exit;
+            // Las credenciales son correctas
+            if ($user['rol']==0){
+                $_SESSION['id_usuario'] = $user['id_usuario'];
+                header("Location: index.php"); // Redirigir a la página de inicio
+                exit;
+            } else {
+                $_SESSION['id_usuario'] = $user['id_usuario'];
+                header("Location: admin.php"); // Redirigir a la página de administrador
+                exit;
+            }
         }else {
             // La contraseña es incorrecta
             echo "Contraseña incorrecta.";
