@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,9 +10,9 @@
     <link rel="stylesheet" href="index.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src=""></script>
     <script src="index.js"></script>
 </head>
-
 <body>
     <div class="cabecera">
         <i id="logo_user" class="fa-regular fa-user" style="color: white;"></i>
@@ -88,42 +87,43 @@
             <h3 id="no">Recomendado para ti</h3>
             <div class="products-grid row">
             <?php
-// Incluir el archivo de conexión
-    include 'conexion.php';
+                // Incluir el archivo de conexión
+                include 'conexion.php';
 
-    // Consulta SQL para obtener los productos
-    $sql = "SELECT nombre, descripcion, precio_ud, imagen, marca FROM PRODUCTO";
-    $stmt = $conn->query($sql);
+                // Consulta SQL para obtener los productos
+                $sql = "SELECT id_producto, nombre, descripcion, precio_ud, imagen, marca FROM PRODUCTO"; // Cambiar 'id' a 'id_producto'
+                $stmt = $conn->query($sql);
 
-    // Verificar si hay productos
-    if ($stmt->rowCount() > 0) {
-        // Generar HTML para cada producto
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $nombre = $row["nombre"];
-            $descripcion = $row["descripcion"];
-            $precio = number_format($row["precio_ud"], 2, '.', '');
-            // $precio = sprintf('%.2f', $row["precio_ud"]);
-            $imagen = $row["imagen"];
+                // Verificar si hay productos
+                if ($stmt->rowCount() > 0) {
+                    // Generar HTML para cada producto
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        $id = $row["id_producto"]; // Obtener el 'id_producto'
+                        $nombre = $row["nombre"];
+                        $descripcion = $row["descripcion"];
+                        $precio = number_format($row["precio_ud"], 2, '.', '');
+                        $imagen = $row["imagen"];
 
-            echo '<div class="col-6 col-md-4 col-lg-3 col-xl-3">';
-            echo '    <div class="producto my-3 px-3 py-3 d-flex flex-column align-items-center" data-price="' . $precio . '">';
-            echo '        <img class="img-fluid" src="' . $imagen . '">';
-            echo '        <h2 class="nombre">' . $nombre . '</h2>';
-            echo '        <p class="description"> ' . $descripcion . '</p>';
-            echo '        <div class="precio">';
-            echo '            <h3 class="price">' . $precio . '€'.'</h3>';
-            echo '            <a href="#"><img class="carro" src="./img/carro-blanco.png" /></a>';
-            echo '        </div>';
-            echo '    </div>';
-            echo '</div>';
-        }
-    } else {
-        echo "No hay productos disponibles.";
-    }
+                        echo '<div class="col-6 col-md-4 col-lg-3 col-xl-3">';
+                        echo '    <div class="producto my-3 px-3 py-3 d-flex flex-column align-items-center" data-price="' . $precio . '">';
+                        echo '        <img class="img-fluid" src="' . $imagen . '">';
+                        echo '        <h2 class="nombre">' . $nombre . '</h2>';
+                        echo '        <p class="description"> ' . $descripcion . '</p>';
+                        echo '        <div class="precio">';
+                        echo '            <h3 class="price">' . $precio . '€'.'</h3>';
+                        echo '            <a href="producto.php?id_producto=' . $id . '">Ver detalles</a>'; // Cambiar 'id' a 'id_producto'
+                        echo '            <a href="#"><img class="carro" src="./img/carro-blanco.png" /></a>';
+                        echo '        </div>';
+                        echo '    </div>';
+                        echo '</div>';
+                    }
+                } else {
+                    echo "No hay productos disponibles.";
+                }
 
-// Cerrar la conexión
-$conn = null;
-?>
+                // Cerrar la conexión
+                $conn = null;
+            ?>
             </div>
         </div>
     </div>

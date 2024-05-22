@@ -14,7 +14,7 @@
 </head>
 
 <body>
-        <div class="cabecera">
+    <div class="cabecera">
         <i id="logo_user" class="fa-regular fa-user" style="color: white;"></i>
         <?php session_start();
             if (isset($_SESSION['id_usuario'])) {
@@ -25,6 +25,7 @@
             }
         ?>
     </div>
+    
     <header class="subcabecera">
         <div id="sidebar" class="sidebar" style="width: 0px;">
             <a href="#" id="equis" class="boton-cerrar" onclick="ocultar()">×</a>
@@ -104,9 +105,6 @@
 
         </div>
     </div>
-
-
-
 
     <footer>
         <p>&copy; 2024 CyberSphere Technologies. David Díaz y Héctor Marín.</p>

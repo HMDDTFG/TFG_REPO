@@ -87,7 +87,10 @@ header.CLASE {
     justify-content: flex-end;
     margin-right: 40px
 }
-
+a{
+    font-size: medium;
+    align-items: flex-end;
+}
 #logo {
     height: 80px;
     margin-left: -14%;
