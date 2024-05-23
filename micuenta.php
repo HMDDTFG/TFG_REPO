@@ -85,27 +85,32 @@
                 <ul id="listadatos">
                     <?php 
                     include "conexion.php";
+                    if (isset($_SESSION['id_usuario'])) {
+                        $username = htmlspecialchars($_SESSION['id_usuario'], ENT_QUOTES, 'UTF-8');
 
-                    $username = htmlspecialchars($_SESSION['id_usuario'], ENT_QUOTES, 'UTF-8');
-
-                    $sql = "SELECT `id_usuario`, `correo`, `ciudad`, `cp` FROM `usuario` WHERE `id_usuario` LIKE '$username'";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->execute();
-                    $datos = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-                    echo '<li class="datos">Nombre de usuario: '.$datos['id_usuario'].'</li>';
-                    echo '<li class="datos">Correo electrónico: '.$datos['correo'].' </li>';
-                    echo '<li class="datos">Ciudad: '.$datos['ciudad'].' </li>';
-                    echo '<li class="datos">Código postal: '.$datos['cp'].' </li>';
+                        $sql = "SELECT `id_usuario`, `correo`, `ciudad`, `cp` FROM `usuario` WHERE `id_usuario` LIKE '$username'";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->execute();
+                        $datos = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+                        echo '<li class="datos">Nombre de usuario: '.$datos['id_usuario'].'</li>';
+                        echo '<li class="datos">Correo electrónico: '.$datos['correo'].' </li>';
+                        echo '<li class="datos">Ciudad: '.$datos['ciudad'].' </li>';
+                        echo '<li class="datos">Código postal: '.$datos['cp'].' </li>';
+                    } else{
+                        echo '<li class="datos">Inicia sesión para ver tus datos.</li>';
+                    }
                     
                     ?>
                 </ul>
             </div>
             <div id="sinsesion">
-                    <h4>¿Quieres cerrar sesión? Pulse aquí</h4>
-                    <form class="cses" action="cerrarsesion.php" method="post">
-                        <input class="inputlog" type="submit" value="Cerrar Sesión">
-                    </form>
+                    <?php if (isset($_SESSION['id_usuario'])) {
+                    echo "<h4>¿Quieres cerrar sesión? Pulse aquí</h4>
+                    <form class=\"cses\" action=\"cerrarsesion.php\" method=\"post\">
+                        <input class=\"inputlog\" type=\"submit\" value=\"Cerrar Sesión\">
+                    </form>}";}
+                    ?>
             </div>
         </div>
     </div>
