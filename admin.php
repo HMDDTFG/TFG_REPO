@@ -129,10 +129,63 @@ if (isset($_POST['borrar'])) {
                         <br><br>
                         <input name="borrar" class="inputlog" type="submit" value="Borrar usuario">
         </form>
-        <li class="lista">a</li>
-        <li class="lista">a</li>
-        <li class="lista">a</li>
-        <li class="lista">a</li>
+        <li class="lista">Otorgar rol de administrador al siguiente usuario:</li>
+        <?php
+// Incluir el archivo de conexión
+include "conexion.php";
+
+
+// Verificar si el formulario fue enviado
+if (isset($_POST['admini'])) {
+    // Obtener los datos del formulario
+    $usernamea = $_POST['usuarioa'];
+    // Preparar y ejecutar la consulta para buscar al usuario
+    $sql = "SELECT `id_usuario`, `rol` FROM `usuario` WHERE `id_usuario` LIKE '$usernamea'";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+
+    // Verificar si se encontró el usuario
+    if ($stmt->rowCount() == 1) {
+        $usera = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($usera['rol']==0) {
+                $sql = "UPDATE `usuario` SET `rol` = '1' WHERE `usuario`.`id_usuario` = '$usernamea';";
+                $stmt = $conn->prepare($sql);
+                if ($stmt->execute()) {
+                    echo "<script>alert('Se ha convertido en administrador correctamente.');</script>";
+                    header("Location: admin.php"); // Redirigir a la página de admin después del registro
+                    exit;
+                } else {
+                    echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+        }else {
+            echo "<script>alert('Ya es administrador.');</script>";
+        }
+    } else {
+        // El usuario no existe
+        echo "<script>alert('El usuario no existe.');</script>";
+    }
+}
+?>
+            <form action="admin.php" method="post">
+                            <label for="usuario">Usuario:</label>
+                            <input type="text" id="usuarioa" name="usuarioa" required>
+                            <br><br>
+                            <input name="admini" class="inputlog" type="submit" value="Hacer administrador">
+            </form>
+        <li class="lista">Escribe el usuario que quieres actualizar, luego selecciona el campo y luego escribe el nuevo valor:</li>
+        <form action="admin.php" method="post">
+                            <label for="usuario">Usuario:</label>
+                            <input type="text" id="usuariou" name="usuariou" required>
+                            <br><br>
+                            <input type="radio" name="group" value="nombreusuario">Nombre de usuario
+                            <input type="radio" name="group" value="contraseña">Contraseña
+                            <input type="radio" name="group" value="ciudad">Ciudad
+                            <br><br>
+                            <label for="nuevovalor">Nuevo valor:</label>
+                            <input type="text" name="nuevovalor" required>
+                            <br><br>
+                            <input name="actualizar" class="inputlog" type="submit" value="Actualizar">
+        </form>
         </ul>
     </div>
 
