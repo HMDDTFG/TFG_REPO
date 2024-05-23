@@ -9,33 +9,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['correo'];
     $city = $_POST['ciudad'];
     $cp = $_POST['codigo_postal'];
-
-    // Verificar que las contraseñas coincidan
-    if ($password !== $confirm_password) {
-        echo "Las contraseñas no coinciden.";
-        exit;
-    }
-
-    // Encriptar la contraseña
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
+    $sql = "SELECT `id_usuario`, `password`, `rol` FROM `usuario` WHERE `id_usuario` LIKE '$username'";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+
+    if ($stmt->rowCount() > 0) {
+        echo "<script>alert('El usuario ya existe.');</script>";
+    }
+    elseif ($password == $confirm_password) {
     // Preparar y ejecutar la consulta de inserción
     $sql = "INSERT INTO `usuario` (`id_usuario`, `password`, `correo`, `ciudad`, `cp`, `rol`, `estado`) 
     VALUES ('$username', '$hashed_password', '$email', '$city', '$cp', '0', '1')";
     $stmt = $conn->prepare($sql);
- 
-
     if ($stmt->execute()) {
         echo "Registro exitoso";
         header("Location: login.php"); // Redirigir a la página de inicio de sesión después del registro
-        exit;
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
+    }}
+    elseif ($password !== $confirm_password){
+        echo "<script>alert('Las contraseñas no coinciden.');</script>";
     }
-
-    // Cerrar la declaración y la conexión
-    $stmt->close();
-    $conn->close();
 }
 ?>
 

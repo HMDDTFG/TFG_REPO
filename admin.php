@@ -14,15 +14,24 @@
         <?php session_start();
                     if (isset($_SESSION['id_usuario'])) {
                         $username = htmlspecialchars($_SESSION['id_usuario'], ENT_QUOTES, 'UTF-8');
-                        echo "<h1>Página de administrador, bienvenido $username</h1>";
+                        echo "<h1>Página de administrador, bienvenido $username !!</h1>";
                     } else {
                         echo "<h1>Página de administrador, <a href=\"login.php\" style=\"color: #ffffff;\">Identifícate</a>";
                     }
         ?>
+       
         </div>
     </header>
     <div>
         <h3>Bienvenido a la página de administrador de CyberSphere Technologies. Desde esta páginas podrás borrar usuarios, crear usuarios, otorgar permisos de administrador a usuarios ya existentes y actualizar datos de usuarios.</h3>
+        <h4><?php 
+        if (isset($_SESSION['id_usuario'])) {
+                    echo "<label for=\"usuario\">¿Quieres cerrar sesión?</label><br><br>
+                    <form class=\"csea\" action=\"cerrarsesion.php\" method=\"post\">
+                        <input class=\"inputcses\" type=\"submit\" value=\"Cerrar Sesión\">
+                    </form>";
+        }
+        ?></h4>
         <ul>
         <li class="lista">Crear un usuario nuevo: </li>
         <?php
@@ -36,33 +45,29 @@
                 $email = $_POST['correo'];
                 $city = $_POST['ciudad'];
                 $cp = $_POST['codigo_postal'];
-
-                // Verificar que las contraseñas coincidan
-                if ($password !== $confirm_password) {
-                    echo "<script>alert('Las contraseñas no coinciden.');</script>";
-                    exit;
-                }
-
-                // Encriptar la contraseña
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
+                $sql = "SELECT `id_usuario`, `password`, `rol` FROM `usuario` WHERE `id_usuario` LIKE '$username'";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+
+                if ($stmt->rowCount() > 0) {
+                    echo "<script>alert('El usuario ya existe.');</script>";
+                }
+                elseif ($password == $confirm_password) {
                 // Preparar y ejecutar la consulta de inserción
                 $sql = "INSERT INTO `usuario` (`id_usuario`, `password`, `correo`, `ciudad`, `cp`, `rol`, `estado`) 
                 VALUES ('$username', '$hashed_password', '$email', '$city', '$cp', '0', '1')";
                 $stmt = $conn->prepare($sql);
-            
-
                 if ($stmt->execute()) {
-                    echo "<script>alert('El usuario se ha creado correctamente.');</script>";
-                    header("Location: admin.php"); // Redirigir a la página de admin después del registro
-                    exit;
+                    echo "Registro exitoso";
+                    header("Location: admin.php"); // Redirigir a la página de inicio de sesión después del registro
                 } else {
                     echo "Error: " . $sql . "<br>" . $conn->error;
+                }}
+                elseif ($password !== $confirm_password){
+                    echo "<script>alert('Las contraseñas no coinciden.');</script>";
                 }
-
-                // Cerrar la declaración y la conexión
-                $stmt->close();
-                $conn->close();
             }
 ?>
         <form action="admin.php" method="post">
@@ -152,7 +157,7 @@ if (isset($_POST['admini'])) {
                 $stmt = $conn->prepare($sql);
                 if ($stmt->execute()) {
                     echo "<script>alert('Se ha convertido en administrador correctamente.');</script>";
-                    header("Location: admin.php"); // Redirigir a la página de admin después del registro
+                    //header("Location: admin.php"); // Redirigir a la página de admin después del registro
                     exit;
                 } else {
                     echo "Error: " . $sql . "<br>" . $conn->error;
@@ -177,8 +182,8 @@ if (isset($_POST['admini'])) {
                             <label for="usuario">Usuario:</label>
                             <input type="text" id="usuariou" name="usuariou" required>
                             <br><br>
-                            <input type="radio" name="group" value="nombreusuario">Nombre de usuario
-                            <input type="radio" name="group" value="contraseña">Contraseña
+                            <input type="radio" name="group" value="id_usuario">Nombre de usuario
+                            <input type="radio" name="group" value="password">Contraseña
                             <input type="radio" name="group" value="ciudad">Ciudad
                             <br><br>
                             <label for="nuevovalor">Nuevo valor:</label>
@@ -186,6 +191,51 @@ if (isset($_POST['admini'])) {
                             <br><br>
                             <input name="actualizar" class="inputlog" type="submit" value="Actualizar">
         </form>
+        <?php
+// Incluir el archivo de conexión
+include "conexion.php";
+
+
+// Verificar si el formulario fue enviado
+if (isset($_POST['actualizar'])) {
+    // Obtener los datos del formulario
+    $usernameu = $_POST['usuariou'];
+    $campo = $_POST['group'];
+    $nuevovalor = $_POST['nuevovalor'];
+    // Preparar y ejecutar la consulta para buscar al usuario
+    $sql = "SELECT `id_usuario` FROM `usuario` WHERE `id_usuario` LIKE '$usernameu'";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+
+    // Verificar si se encontró el usuario
+    if ($stmt->rowCount() == 1) {
+        if ($campo=="password"){
+            $hashed_nv = password_hash($nuevovalor, PASSWORD_DEFAULT);
+            $sql = "UPDATE `usuario` SET `$campo` = '$hashed_nv' WHERE `usuario`.`id_usuario` = '$usernameu';";
+            $stmt = $conn->prepare($sql);
+            if ($stmt->execute()) {
+            echo "<script>alert('Se ha actualizado la contraseña correctamente.');</script>";
+            //header("Location: admin.php"); // Redirigir a la página de admin después de la actualizacion
+            exit;
+            } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+        }elseif ($campo!=="contraseña"){
+        $sql = "UPDATE `usuario` SET `$campo` = '$nuevovalor' WHERE `usuario`.`id_usuario` = '$usernameu';";
+        $stmt = $conn->prepare($sql);
+        if ($stmt->execute()) {
+            echo "<script>alert('Se ha actualizado correctamente.');</script>";
+            //header("Location: admin.php"); // Redirigir a la página de admin después de la actualizacion
+            exit;
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }}
+    } else {
+        // El usuario no existe
+        echo "<script>alert('El usuario no existe.');</script>";
+    }
+}
+?>
         </ul>
     </div>
 

@@ -27,3 +27,10 @@ h3{
     color: white;
     border-radius: 3px;
 }
+.inputcses{
+    background-color: red;
+    color: white;
+}
+h4{
+    margin-left: 2%;
+}
