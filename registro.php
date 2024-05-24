@@ -1,6 +1,5 @@
 <?php
 include "conexion.php";
-// Verificar si el formulario fue enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos del formulario
     $username = $_POST['usuario'];
@@ -60,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="form_log">
                     <form action="registro.php" method="post">
                         <label for="usuario">Usuario:</label>
-                        <input type="text" id="usuario" name="usuario" required>
+                        <input type="text" id="usuario" name="usuario" maxlength="12" required>
                         <br><br>
                         <label for="password">Contraseña:</label>
                         <input type="password" id="password" name="password" required>
@@ -75,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <input type="text" id="ciudad" name="ciudad" required>
                         <br><br>
                         <label for="codigo_postal">Código Postal:</label>
-                        <input type="text" id="codigo_postal" name="codigo_postal" required>
+                        <input type="text" id="codigo_postal" name="codigo_postal" maxlength="5" required>
                         <br><br>
                         <input class="inputlog" type="submit" value="Crear cuenta">
                     </form>

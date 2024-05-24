@@ -87,23 +87,16 @@
             <h3 id="no">Recomendado para ti</h3>
             <div class="products-grid row">
             <?php
-                // Incluir el archivo de conexión
                 include 'conexion.php';
-
-                // Consulta SQL para obtener los productos
                 $sql = "SELECT id_producto, nombre, descripcion, precio_ud, imagen, marca FROM PRODUCTO"; // Cambiar 'id' a 'id_producto'
                 $stmt = $conn->query($sql);
-
-                // Verificar si hay productos
                 if ($stmt->rowCount() > 0) {
-                    // Generar HTML para cada producto
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         $id = $row["id_producto"]; // Obtener el 'id_producto'
                         $nombre = $row["nombre"];
                         $descripcion = $row["descripcion"];
                         $precio = number_format($row["precio_ud"], 2, '.', '');
                         $imagen = $row["imagen"];
-
                         echo '<div class="col-6 col-md-4 col-lg-3 col-xl-3">';
                         echo '    <div class="producto my-3 px-3 py-3 d-flex flex-column align-items-center" data-price="' . $precio . '">';
                         echo '        <img class="img-fluid" src="' . $imagen . '">';
@@ -120,8 +113,6 @@
                 } else {
                     echo "No hay productos disponibles.";
                 }
-
-                // Cerrar la conexión
                 $conn = null;
             ?>
             </div>

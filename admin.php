@@ -36,9 +36,7 @@
         <li class="lista">Crear un usuario nuevo: </li>
         <?php
             include "conexion.php";
-            // Verificar si el formulario fue enviado
             if (isset($_POST['insertar'])) {
-                // Obtener los datos del formulario
                 $username = $_POST['usuario'];
                 $password = $_POST['password'];
                 $confirm_password = $_POST['confirm_password'];
@@ -46,22 +44,19 @@
                 $city = $_POST['ciudad'];
                 $cp = $_POST['codigo_postal'];
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
                 $sql = "SELECT `id_usuario`, `password`, `rol` FROM `usuario` WHERE `id_usuario` LIKE '$username'";
                 $stmt = $conn->prepare($sql);
                 $stmt->execute();
-
                 if ($stmt->rowCount() > 0) {
                     echo "<script>alert('El usuario ya existe.');</script>";
                 }
                 elseif ($password == $confirm_password) {
-                // Preparar y ejecutar la consulta de inserción
                 $sql = "INSERT INTO `usuario` (`id_usuario`, `password`, `correo`, `ciudad`, `cp`, `rol`, `estado`) 
                 VALUES ('$username', '$hashed_password', '$email', '$city', '$cp', '0', '1')";
                 $stmt = $conn->prepare($sql);
                 if ($stmt->execute()) {
-                    echo "Registro exitoso";
-                    header("Location: admin.php"); // Redirigir a la página de inicio de sesión después del registro
+                    echo "<script>alert('Se ha creado el usuario correctamente.');</script>";
+                    header("Location: admin.php"); //Redirigiralapáginadeiniciodesesióndespuésdelregistro
                 } else {
                     echo "Error: " . $sql . "<br>" . $conn->error;
                 }}
@@ -95,17 +90,12 @@
         <?php
 // Incluir el archivo de conexión
 include "conexion.php";
-
-
-// Verificar si el formulario fue enviado
 if (isset($_POST['borrar'])) {
-    // Obtener los datos del formulario
     $usernameb = $_POST['usuariob'];
     // Preparar y ejecutar la consulta para buscar al usuario
     $sql = "SELECT `id_usuario`, `rol` FROM `usuario` WHERE `id_usuario` LIKE '$usernameb'";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-
     // Verificar si se encontró el usuario
     if ($stmt->rowCount() == 1) {
         $userb = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -138,17 +128,12 @@ if (isset($_POST['borrar'])) {
         <?php
 // Incluir el archivo de conexión
 include "conexion.php";
-
-
-// Verificar si el formulario fue enviado
 if (isset($_POST['admini'])) {
-    // Obtener los datos del formulario
     $usernamea = $_POST['usuarioa'];
     // Preparar y ejecutar la consulta para buscar al usuario
     $sql = "SELECT `id_usuario`, `rol` FROM `usuario` WHERE `id_usuario` LIKE '$usernamea'";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-
     // Verificar si se encontró el usuario
     if ($stmt->rowCount() == 1) {
         $usera = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -182,7 +167,7 @@ if (isset($_POST['admini'])) {
                             <label for="usuario">Usuario:</label>
                             <input type="text" id="usuariou" name="usuariou" required>
                             <br><br>
-                            <input type="radio" name="group" value="id_usuario">Nombre de usuario
+                            <input type="radio" name="group" value="id_usuario" checked>Nombre de usuario
                             <input type="radio" name="group" value="password">Contraseña
                             <input type="radio" name="group" value="ciudad">Ciudad
                             <br><br>
@@ -192,22 +177,14 @@ if (isset($_POST['admini'])) {
                             <input name="actualizar" class="inputlog" type="submit" value="Actualizar">
         </form>
         <?php
-// Incluir el archivo de conexión
 include "conexion.php";
-
-
-// Verificar si el formulario fue enviado
 if (isset($_POST['actualizar'])) {
-    // Obtener los datos del formulario
     $usernameu = $_POST['usuariou'];
     $campo = $_POST['group'];
     $nuevovalor = $_POST['nuevovalor'];
-    // Preparar y ejecutar la consulta para buscar al usuario
     $sql = "SELECT `id_usuario` FROM `usuario` WHERE `id_usuario` LIKE '$usernameu'";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-
-    // Verificar si se encontró el usuario
     if ($stmt->rowCount() == 1) {
         if ($campo=="password"){
             $hashed_nv = password_hash($nuevovalor, PASSWORD_DEFAULT);
@@ -215,7 +192,6 @@ if (isset($_POST['actualizar'])) {
             $stmt = $conn->prepare($sql);
             if ($stmt->execute()) {
             echo "<script>alert('Se ha actualizado la contraseña correctamente.');</script>";
-            //header("Location: admin.php"); // Redirigir a la página de admin después de la actualizacion
             exit;
             } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
@@ -225,13 +201,11 @@ if (isset($_POST['actualizar'])) {
         $stmt = $conn->prepare($sql);
         if ($stmt->execute()) {
             echo "<script>alert('Se ha actualizado correctamente.');</script>";
-            //header("Location: admin.php"); // Redirigir a la página de admin después de la actualizacion
             exit;
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }}
     } else {
-        // El usuario no existe
         echo "<script>alert('El usuario no existe.');</script>";
     }
 }

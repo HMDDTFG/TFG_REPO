@@ -1,23 +1,12 @@
 <?php
-// Iniciar la sesión
 session_start();
-
-// Incluir el archivo de conexión
 include "conexion.php";
-
-
-// Verificar si el formulario fue enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener los datos del formulario
     $username = $_POST['usuario'];
     $password = $_POST['contraseña'];
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    // Preparar y ejecutar la consulta para buscar al usuario
     $sql = "SELECT `id_usuario`, `password`, `rol` FROM `usuario` WHERE `id_usuario` LIKE '$username'";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-
-    // Verificar si se encontró el usuario
     if ($stmt->rowCount() == 1) {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -34,12 +23,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit;
             }
         }else {
-            // La contraseña es incorrecta
-            echo "Contraseña incorrecta.";
+            echo "<script>alert('Contraseña incorrecta.');</script>";
         }
     } else {
-        // El usuario no existe
-        echo "El usuario no existe.";
+        echo "<script>alert('El usuario no existe.');</script>";
     }
 }
 ?>
