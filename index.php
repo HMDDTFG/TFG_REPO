@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="index.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src=""></script>
     <script src="index.js"></script>
 </head>
 <body>
@@ -70,7 +69,7 @@
         <div id="logos"><img id="logo" src="./img/logo.png" alt="Logo empresa">
             <img id="nombre" class="d-none d-lg-block" src="./img/logo_nombre.png" alt="Nombre empresa">
         </div>
-        <div id="div_cesta"><a href="cesta.html"><i id="cesta" class="fa-solid fa-cart-shopping"
+        <div id="div_cesta"><a href="cart.php"><i id="cesta" class="fa-solid fa-cart-shopping"
                     style="color: rgb(5,47,64);"></i></a></div>
     </header>
 
@@ -88,15 +87,21 @@
             <div class="products-grid row">
             <?php
                 include 'conexion.php';
-                $sql = "SELECT id_producto, nombre, descripcion, precio_ud, imagen, marca FROM PRODUCTO"; // Cambiar 'id' a 'id_producto'
+
+                // Consulta SQL para obtener los productos
+                $sql = "SELECT id_producto, nombre, descripcion, precio_ud, imagen, marca FROM PRODUCTO";
                 $stmt = $conn->query($sql);
+
+                // Verificar si hay productos
                 if ($stmt->rowCount() > 0) {
+                    // Generar HTML para cada producto
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        $id = $row["id_producto"]; // Obtener el 'id_producto'
+                        $id = $row["id_producto"];
                         $nombre = $row["nombre"];
                         $descripcion = $row["descripcion"];
                         $precio = number_format($row["precio_ud"], 2, '.', '');
                         $imagen = $row["imagen"];
+
                         echo '<div class="col-6 col-md-4 col-lg-3 col-xl-3">';
                         echo '    <div class="producto my-3 px-3 py-3 d-flex flex-column align-items-center" data-price="' . $precio . '">';
                         echo '        <img class="img-fluid" src="' . $imagen . '">';
@@ -104,8 +109,8 @@
                         echo '        <p class="description"> ' . $descripcion . '</p>';
                         echo '        <div class="precio">';
                         echo '            <h3 class="price">' . $precio . '€'.'</h3>';
-                        echo '            <a href="producto.php?id_producto=' . $id . '">Ver detalles</a>'; // Cambiar 'id' a 'id_producto'
-                        echo '            <a href="#"><img class="carro" src="./img/carro-blanco.png" /></a>';
+                        echo '            <a href="producto.php?id_producto=' . $id . '">Ver detalles</a>';
+                        echo '            <a href="javascript:void(0)" class="add_carro" data-id="' . $id . '"><img class="carro" src="./img/carro-blanco.png" /></a>';
                         echo '        </div>';
                         echo '    </div>';
                         echo '</div>';
@@ -113,8 +118,10 @@
                 } else {
                     echo "No hay productos disponibles.";
                 }
+
                 $conn = null;
             ?>
+            
             </div>
         </div>
     </div>
