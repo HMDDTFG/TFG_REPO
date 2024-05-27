@@ -1,34 +1,43 @@
-img{
-    height: 120px !important;
-
-}
+/* Estilos generales */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f6f6f6;
     margin: 0;
     padding: 0;
 }
 
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9; /* Ligero color negro en el contenedor */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease; /* Transición de color suave */
+}
+
 h3 {
     text-align: center;
-    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333333;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
+/* Estilos de los elementos del carrito */
 .cart-item {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background-color: #fff;
+    background-color: #fafafa;
     margin-bottom: 20px;
     padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease; /* Transición suave para los elementos del carrito */
+}
+
+.cart-item:hover {
+    transform: translateY(-3px); /* Efecto de elevación al pasar el cursor */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada al pasar el cursor */
 }
 
 .cart-item img {
@@ -36,31 +45,35 @@ h3 {
     height: auto;
     border-radius: 5px;
     margin-right: 20px;
+    transition: transform 0.3s ease; /* Transición suave para las imágenes */
 }
 
-.cart-item p {
-    margin: 0;
-    font-size: 16px;
-    color: #555;
+.cart-item:hover img {
+    transform: scale(1.05); /* Efecto de zoom al pasar el cursor */
 }
 
-.cart-item .item-details {
-    display: flex;
-    align-items: center;
+.item-details {
     flex-grow: 1;
 }
 
-.cart-item .item-details p {
-    margin-right: 20px;
+.item-details p {
+    margin: 0;
+    font-size: 18px;
+    color: #555555;
 }
 
-.cart-item .item-quantity {
+.item-details p.item-price {
     font-weight: bold;
-    color: #333;
+    color: #000000;
 }
 
+.item-details p.item-quantity {
+    color: #777777;
+}
+
+/* Estilos del carrito vacío */
 .cart-empty {
     text-align: center;
-    font-size: 18px;
-    color: #777;
+    font-size: 20px;
+    color: #888888;
 }

@@ -52,18 +52,7 @@ $(document).ready(function () {
             }
         });
     });
-
-// $(document).ready(function(){
-// $('.restar_cantidad').click(function(){
-//     let cantidad = $(this).parents
-// })
-// });
-
-
-
-
-
-
+   
     $(".price-sorting-link").on("click", function (event) {
         event.preventDefault();
         var sortingMethod = $(this).data("sort");
