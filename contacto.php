@@ -89,8 +89,24 @@
                 265 164</p>
             <p class="parr_quien" id="text_form">O en caso contrario, también disponemos de un formulario de contacto:
             </p>
-
-            <form class="contactoform" action="enviar.php" method="post">
+            <?php
+                include "conexion.php";
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    // Obtener los datos del formulario
+                    $nombre = $_POST['nombre'];
+                    $email = $_POST['email'];
+                    $texto = $_POST['mensaje'];
+                    $sql = "INSERT INTO `contacto` (`nombre_i`, `email_i`, `incidencia_texto`) 
+                    VALUES ('$nombre', '$email', '$texto')";
+                    $stmt = $conn->prepare($sql);
+                    if ($stmt->execute()) {
+                        echo "<script>alert('Incidencia enviada correctamente, nos pondremos en contacto contigo vía email.');</script>";
+                    } else {
+                        echo "Error: " . $sql . "<br>" . $conn->error;
+                    }
+                }
+            ?>
+            <form class="contactoform" action="contacto.php" method="post">
                 <label for="nombre" class="text_formulario" id="primer_item">Nombre:&nbsp</label>
                 <input type="text" id="nombre" name="nombre" required>
                 <br><br>
