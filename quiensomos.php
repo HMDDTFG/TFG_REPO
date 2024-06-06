@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyberSphere Technologies</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="quien.css">
     <script src="https://kit.fontawesome.com/ce9416b376.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
     integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
@@ -59,18 +59,20 @@
                 <li><a class="titulo">ENCUENTRANOS AQUÍ</a></li>
                 <img class="rrss" src="./img/instagram.png"><img id="twitter" class="rrss" src="./img/twitter.png">
             </ul>
-            
         </div>
         <div id="overlay"></div>
         <div id="contenido" style="margin-left: 0px;">
-                <div id="div_menu"><a id="abrir" class="abrir-cerrar" href="javascript:void(0)" onclick="mostrar()" style="display: inline;"><i id="menu" class="fa-solid fa-bars" style="color: rgb(5,47,64);"></i></a></div>
+            <div id="div_menu"><a id="abrir" class="abrir-cerrar" href="javascript:void(0)" onclick="mostrar()"
+                    style="display: inline;"><i id="menu" class="fa-solid fa-bars" style="color: rgb(5,47,64);"></i></a>
+            </div>
         </div>
         <a id="cerrar" class="abrir-cerrar" href="#" onclick="ocultar()" style="display: none;">
         </a>
         <div id="logos"><img id="logo" src="./img/logo.png" alt="Logo empresa">
-            <img id="nombre" src="./img/logo_nombre.png" alt="Nombre empresa">
+            <img id="nombre" class="d-none d-lg-block" src="./img/logo_nombre.png" alt="Nombre empresa">
         </div>
-        <div id="div_cesta"><a href="cesta.html"><i id="cesta" class="fa-solid fa-cart-shopping" style="color: rgb(5,47,64);"></i></a></div>
+        <div id="div_cesta"><a href="cart.php"><i id="cesta" class="fa-solid fa-cart-shopping"
+                    style="color: rgb(5,47,64);"></i></a></div>
     </header>
 
     <div id="despegable">
