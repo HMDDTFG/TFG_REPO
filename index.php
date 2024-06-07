@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,7 +16,7 @@
 <body>
     <div class="cabecera">
         <i id="logo_user" class="fa-regular fa-user" style="color: white;"></i>
-        <?php session_start();
+        <?php
         if (isset($_SESSION['id_usuario'])) {
             $username = htmlspecialchars($_SESSION['id_usuario'], ENT_QUOTES, 'UTF-8');
             echo "<a id=\"cab_usuario\" class=\"px-2\" href=\"micuenta.php\" style=\"color: #ffffff;\">$username</a>";
@@ -33,7 +34,6 @@
                 <li><a class="titulo" id="botonquien" href="quiensomos.php">¿QUIÉNES SOMOS?</a></li>
                 <li><a class="separacion"></a></li>
                 <li><a class="titulo">PRODUCTOS</a></li>
-                <li><a class="opciones">POR MARCAS</a></li>
                 <li><a class="opciones price-sorting-link" href="#" data-sort="h2l">MÁS CAROS</a></li>
                 <li><a class="opciones price-sorting-link" href="#" data-sort="l2h">MÁS BARATOS</a></li>
                 <li><a class="separacion"></a></li>

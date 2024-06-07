@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -11,7 +12,7 @@
 	<script src="index.js"></script>
     <header class="cabadmin">
         <div class="tituloadmin">
-        <?php session_start();
+        <?php 
                     if (isset($_SESSION['id_usuario'])) {
                         $username = htmlspecialchars($_SESSION['id_usuario'], ENT_QUOTES, 'UTF-8');
                         echo "<h1>Página de administrador, bienvenido $username !!</h1>";

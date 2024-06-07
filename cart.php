@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +11,6 @@
     <div class="container">
         <h3>Compras:</h3>
         <?php
-        session_start(); // Iniciar sesión
 
         if (!empty($_SESSION['carrito'])) {
             foreach ($_SESSION['carrito'] as $key => $producto) {

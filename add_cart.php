@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 // Comprueba si existe el id en la sesión
 
 $id = 'producto_'. $_POST['id'];

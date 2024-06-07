@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -15,7 +16,7 @@
 <body>
     <div class="cabecera">
         <i id="logo_user" class="fa-regular fa-user" style="color: white;"></i>
-        <?php session_start();
+        <?php
         if (isset($_SESSION['id_usuario'])) {
             $username = htmlspecialchars($_SESSION['id_usuario'], ENT_QUOTES, 'UTF-8');
             echo "<a id=\"cab_usuario\" class=\"px-2\" href=\"micuenta.php\" style=\"color: #ffffff;\">$username</a>";
@@ -33,7 +34,6 @@
                 <li><a class="titulo" id="botonquien" href="quiensomos.php">¿QUIÉNES SOMOS?</a></li>
                 <li><a class="separacion"></a></li>
                 <li><a class="titulo">PRODUCTOS</a></li>
-                <li><a class="opciones">POR MARCAS</a></li>
                 <li><a class="opciones price-sorting-link" href="#" data-sort="h2l">MÁS CAROS</a></li>
                 <li><a class="opciones price-sorting-link" href="#" data-sort="l2h">MÁS BARATOS</a></li>
                 <li><a class="separacion"></a></li>
@@ -74,8 +74,24 @@
         <p class="parr_quien">Por favor, si tienes alguna duda o algún problema contacte con el siguiente teléfono:</p>
         <p class="parr_quien" id="telefono"><i class="fa-solid fa-mobile" style="color: #000000;"></i>&nbsp;+34 697 265 164</p>
         <p class="parr_quien" id="text_form">O en caso contrario, también disponemos de un formulario de contacto:</p>
-
-        <form class="contactoform" action="enviar.php" method="post">
+        <?php
+                include "conexion.php";
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    // Obtener los datos del formulario
+                    $nombre = $_POST['nombre'];
+                    $email = $_POST['email'];
+                    $texto = $_POST['mensaje'];
+                    $sql = "INSERT INTO `contacto` (`nombre_i`, `email_i`, `incidencia_texto`) 
+                    VALUES ('$nombre', '$email', '$texto')";
+                    $stmt = $conn->prepare($sql);
+                    if ($stmt->execute()) {
+                        echo "<script>alert('Incidencia enviada correctamente, nos pondremos en contacto contigo vía email.');</script>";
+                    } else {
+                        echo "Error: " . $sql . "<br>" . $conn->error;
+                    }
+                }
+            ?>
+        <form class="contactoform" action="contacto.php" method="post">
             <div class="form-group">
                 <label for="nombre" class="text_formulario">Nombre:</label>
                 <input type="text" class="form-control" id="nombre" name="nombre" required>
