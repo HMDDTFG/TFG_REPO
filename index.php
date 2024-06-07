@@ -89,7 +89,7 @@
                 include 'conexion.php';
 
                 // Consulta SQL para obtener los productos
-                $sql = "SELECT id_producto, nombre, descripcion, precio_ud, imagen, marca FROM PRODUCTO";
+                $sql = "SELECT id_producto, nombre, descripcion, precio_ud, imagen, marca FROM producto";
                 $stmt = $conn->query($sql);
 
                 // Verificar si hay productos

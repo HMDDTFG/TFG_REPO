@@ -14,7 +14,7 @@ if (isset($_GET['id_producto'])) {
     $id = $_GET['id_producto'];
 
     // Consulta SQL para obtener los detalles del producto
-    $sql = "SELECT nombre, descripcion, precio_ud, imagen, marca FROM PRODUCTO WHERE id_producto = :id";
+    $sql = "SELECT nombre, descripcion, precio_ud, imagen, marca FROM producto WHERE id_producto = :id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
